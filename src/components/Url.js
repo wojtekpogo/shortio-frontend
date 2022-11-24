@@ -11,6 +11,7 @@ import { useForm } from 'react-hook-form';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import useCopyToClipboard from './hooks';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import ClearIcon from '@mui/icons-material/Clear';
  
 const ariaLabel = { 'aria-label': 'description' };
  
@@ -37,6 +38,7 @@ export default function Url() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const [isCopied, copyFn, setIsCopied] = useCopyToClipboard()
   const [longUrl, setLongUrl] = React.useState('');
   const [shortUrl, setShortUrl] = React.useState('');
@@ -54,6 +56,12 @@ export default function Url() {
       .then((response) => response.text())
       .then((text) => setShortUrl(text));
   };
+
+
+  const clearInput = () => {
+    setLongUrl("");
+}
+  
 
   function copyElementText(id) {
     var text = document.getElementById(id).innerText;
@@ -74,6 +82,7 @@ export default function Url() {
       <form onSubmit={handleSubmit(handleClick)}>
         <Box mb={2}>
           <TextField
+            id='input'
             variant='outlined'
             label='https://'
             fullWidth
@@ -91,7 +100,13 @@ export default function Url() {
           />
         </Box>
         <Button type="submit" style={styles.buttonStyle} variant="contained" color='success'>Generate Short URL</Button>
+        
       </form>
+      
+      <Box mb={6} paddingTop>
+      <Button style={styles.buttonStyle} variant="outlined" color='primary' onClick={clearInput} ><ClearIcon />Clear</Button>
+      </Box>
+      
 
       {shortUrl && <>
         <p>https://polar-waters-03317.herokuapp.com/api/url/{shortUrl}</p>
